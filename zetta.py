@@ -32,6 +32,9 @@ def main():
     except KeyError as e:
         exit(-1)
 
+    if not (os.path.exists(path_to_repo) and os.path.is_dir(path_to_repo)):
+        exit(-1)
+
     actions = {
         "search": search,
         "edit": edit,
