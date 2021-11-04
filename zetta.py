@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 import os
+import sys
+import datetime
 import argparse
+from subprocess import call
+from git import Repo
 
 def main():
     parser = argparse.ArgumentParser(
@@ -28,12 +32,18 @@ def main():
     args = parser.parse_args()
     
     try:
-        path_to_repo = os.environ["ZETTA_BOX"]
+        global PATH_TO_REPO
+        PATH_TO_REPO = os.environ["ZETTA_BOX"]
     except KeyError as e:
-        exit(-1)
+        sys.stderr.write("Error: please set ZETTA_BOX environment variable\nto path to git repo to store notes in!\n\n")
+        return -1
 
-    if not (os.path.exists(path_to_repo) and os.path.is_dir(path_to_repo)):
-        exit(-1)
+    if not (os.path.exists(PATH_TO_REPO) and os.path.isdir(PATH_TO_REPO)):
+        sys.stderr.write("Error: path to repo is invalid!\n\n")
+        return -1
+    
+    global REPO
+    REPO = Repo(PATH_TO_REPO)
 
     actions = {
         "search": search,
