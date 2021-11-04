@@ -64,10 +64,31 @@ def edit(args):
     pass
 
 def create(args):
-    pass
+    title = "# "
+    editor = os.environ.get("EDITOR") if os.environ.get("EDITOR") else "vi"
+    path = f'{PATH_TO_REPO}{os.path.sep}{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}'
+    os.mkdir(path)
+    path_to_note_file = f"{path}/README.md"
+    with open(path_to_note_file, "w") as note_file:
+        note_file.write(title)
+        note_file.flush()
+        call([editor, path_to_note_file])
+        
+        note_file = open(path_to_note_file, "r") 
+        commit_message = note_file.readline()
+
+    commit = input("commit? (y/n): ")
+    while (commit != "y") and (commit != "n"):
+        commit = input("enter either \"y\" or \"n\": ")\
+    
+    if (commit == "y"):
+        git = REPO.git
+        git.add(path_to_note_file)
+        git.commit(m=commit_message)
+    
 
 def delete(args):
-    pass
+   pass 
 
 if __name__ == "__main__":
     exit(main())
