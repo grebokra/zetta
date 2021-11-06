@@ -63,7 +63,23 @@ def search(args):
     pass
 
 def edit(args):
-    pass
+    note_name = args.id
+    editor = os.environ.get("EDITOR") if os.environ.get("EDITOR") else "vi"
+    path = f'{PATH_TO_REPO}{os.path.sep}{note_name}'
+    path_to_note_file = f"{path}/README.md"
+    
+    call([editor, path_to_note_file])
+    with open(path_to_note_file, "r") as note_file:
+        commit_message = note_name + ": " + note_file.readline()
+
+    commit = input("commit? (y/n): ")
+    while (commit != "y") and (commit != "n"):
+        commit = input("enter either \"y\" or \"n\": ")\
+
+    if (commit == "y"):
+        git = REPO.git
+        git.add(path_to_note_file)
+        git.commit(m=commit_message)
 
 def create(args):
     title = str(args.title)
