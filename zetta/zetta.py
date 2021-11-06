@@ -22,7 +22,9 @@ def main():
     
     create_parser = subparsers.add_parser("create",
             help="create new note")
-    
+    create_parser.add_argument("-t", "--title", type=str,
+            default="# ", dest="title", help="desired title")
+
     delete_parser = subparsers.add_parser("delete",
             help="delete note by id")
     delete_parser.add_argument("id",
@@ -63,9 +65,10 @@ def edit(args):
     pass
 
 def create(args):
-    title = "# "
+    title = str(args.title)
     editor = os.environ.get("EDITOR") if os.environ.get("EDITOR") else "vi"
-    path = f'{PATH_TO_REPO}{os.path.sep}{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}'
+    note_name = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    path = f'{PATH_TO_REPO}{os.path.sep}{note_name}'
     os.mkdir(path)
     path_to_note_file = f"{path}/README.md"
     with open(path_to_note_file, "w") as note_file:
@@ -74,7 +77,7 @@ def create(args):
         call([editor, path_to_note_file])
         
         note_file = open(path_to_note_file, "r") 
-        commit_message = note_file.readline()
+        commit_message = note_name + ": " + note_file.readline()
 
     commit = input("commit? (y/n): ")
     while (commit != "y") and (commit != "n"):
