@@ -13,7 +13,7 @@ def main():
     
     search_parser = subparsers.add_parser("search",
             help="search through notes")
-    search_parser.add_argument("pattern",
+    search_parser.add_argument("pattern", type=str,
             help="pattern to search in notes for")
 
     edit_parser = subparsers.add_parser("edit",
@@ -60,7 +60,22 @@ def main():
             action(args)
     
 def search(args):
-    pass
+    notes = os.listdir(PATH_TO_REPO)[1:]
+    for note_name in notes:
+        path = f'{PATH_TO_REPO}{note_name}'
+        path_to_note_file = f"{path}/README.md"
+        with open(path_to_note_file, 'r') as note_file:
+            title = note_file.readline()
+            if "\n" in title:
+                title = title[:-1]
+            note_file.seek(0)
+            while True:
+                line = note_file.readline()
+                if not line:
+                    break
+                if args.pattern in line:
+                    print(note_name + ": " + title)
+                    break
 
 def edit(args):
     note_name = args.id
