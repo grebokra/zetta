@@ -2,6 +2,7 @@ import os
 import sys
 import datetime
 import argparse
+import shutil
 from subprocess import call
 from git import Repo
 
@@ -90,7 +91,34 @@ def create(args):
     
 
 def delete(args):
-   pass 
+    note_name = args.id
+    path = f'{PATH_TO_REPO}{os.path.sep}{note_name}'
+    path_to_note_file = f"{path}/README.md"
+    try:
+        with open(path_to_note_file, "r") as note_file:
+            note_title = note_file.readline()
+    except FileNotFoundError as e:
+        sys.stderr.write("\nError: note with given name does not exist :(\n\n")
+        return
+
+    do_deletion = input(f"{note_name}: {note_title}\ndelete? (y/n): ")
+    
+    if (do_deletion != "y"):
+        print("deletion canceled!")
+        return
+
+    shutil.rmtree(path)
+    commit_message = "deleted " + note_name
+    print(f"deleted {note_name} ({note_title})")
+    commit = input("commit? (y/n): ")
+    while (commit != "y") and (commit != "n"):
+        commit = input("enter either \"y\" or \"n\": ")\
+
+    if (commit == "y"):
+        git = REPO.git
+        git.add(path_to_note_file)
+        git.commit(m=commit_message)
+
 
 if __name__ == "__main__":
     exit(main())
