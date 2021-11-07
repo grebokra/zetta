@@ -5,6 +5,7 @@ import argparse
 import shutil
 from subprocess import call
 from git import Repo
+from git import InvalidGitRepositoryError
 
 def main():
     parser = argparse.ArgumentParser(
@@ -43,9 +44,13 @@ def main():
     if not (os.path.exists(PATH_TO_REPO) and os.path.isdir(PATH_TO_REPO)):
         sys.stderr.write("Error: path to repo is invalid!\n\n")
         return -1
-    
-    global REPO
-    REPO = Repo(PATH_TO_REPO)
+        
+        global REPO
+    try:
+        REPO = Repo(PATH_TO_REPO)
+    except InvalidGitRepositoryError as e:
+        sys.stderr.write("Error: path in ZETTA_BOX is a valid path to dir, but there isn't a git repo in it\n\n")
+        return -1
 
     actions = {
         "search": search,
