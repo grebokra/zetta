@@ -115,7 +115,8 @@ def create(args):
         
         note_file = open(path_to_note_file, "r") 
         commit_message = note_name + ": " + note_file.readline()
-
+    
+    print(note_name)
     commit = input("commit? (y/n): ")
     while (commit != "y") and (commit != "n"):
         commit = input("enter either \"y\" or \"n\": ")\
