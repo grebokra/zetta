@@ -5,6 +5,7 @@ import argparse
 import shutil
 from subprocess import call
 from git import Repo
+from git import GitCommandError
 from git import InvalidGitRepositoryError
 
 def main():
@@ -152,9 +153,12 @@ def delete(args):
         commit = input("enter either \"y\" or \"n\": ")\
 
     if (commit == "y"):
-        git = REPO.git
-        git.add(path_to_note_file)
-        git.commit(m=commit_message)
+        try:
+            git = REPO.git
+            git.add(path_to_note_file)
+            git.commit(m=commit_message)
+        except GitCommandError as e:
+            sys.stderr.write("\nWarning: could not commit note deletion (was not committed on creation?)\n\n")
 
 
 if __name__ == "__main__":
