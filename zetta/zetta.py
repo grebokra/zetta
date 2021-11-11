@@ -8,7 +8,7 @@ from git import Repo
 from git import GitCommandError
 from git import InvalidGitRepositoryError
 
-def main():
+def parse_args():
     parser = argparse.ArgumentParser(
         description="A Tool for managing a \"box of notes\"")
     subparsers = parser.add_subparsers(dest="action")
@@ -32,8 +32,12 @@ def main():
             help="delete note by id")
     delete_parser.add_argument("id",
             help="note id")
+    
+    return parser.parse_args()
 
-    args = parser.parse_args()
+
+def main():
+    args = parse_args()
     
     try:
         global PATH_TO_REPO
