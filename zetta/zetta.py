@@ -79,6 +79,9 @@ def search(args):
             title = note_file.readline()
             if "\n" in title:
                 title = title[:-1]
+            if "#" in title:
+                title = title[1:]
+                title = title.strip()
             note_file.seek(0)
             while True:
                 line = note_file.readline()
