@@ -94,6 +94,9 @@ def search(args):
 
 def edit(args):
     note_name = args.id
+    if not note_name.isnumeric():
+        sys.stderr.write("\nError: note id should be numeric\n\n")
+        return -1
     editor = os.environ.get("EDITOR") if os.environ.get("EDITOR") else "vi"
     path = f'{PATH_TO_REPO}{os.path.sep}{note_name}'
     path_to_note_file = f"{path}/README.md"
