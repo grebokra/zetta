@@ -70,6 +70,7 @@ def main():
             action(args)
     
 def search(args):
+    pattern_lower = args.pattern.lower()
     notes = os.listdir(PATH_TO_REPO)[1:]
     for note_name in notes:
         path = f'{PATH_TO_REPO}{note_name}'
@@ -81,9 +82,10 @@ def search(args):
             note_file.seek(0)
             while True:
                 line = note_file.readline()
+                line = line.lower()
                 if not line:
                     break
-                if args.pattern in line:
+                if pattern_lower in line:
                     print(note_name + ": " + title)
                     break
 
@@ -104,7 +106,10 @@ def edit(args):
     if (commit == "y"):
         git = REPO.git
         git.add(path_to_note_file)
-        git.commit(m=commit_message)
+        try:
+            git.commit(m=commit_message)
+        except GitCommandError as e:
+            print("Nothing to commit :(\n")
 
 def create(args):
     title = str(args.title)
