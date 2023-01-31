@@ -32,7 +32,12 @@ def parse_args():
             help="delete note by id")
     delete_parser.add_argument("id",
             help="note id")
-    
+
+    show_parser = subparsers.add_parser("show",
+            help="show note by id")
+    show_parser.add_argument("id",
+            help="note id")
+
     return parser.parse_args()
 
 
@@ -61,7 +66,8 @@ def main():
         "search": search,
         "edit": edit,
         "create": create,
-        "delete": delete
+        "delete": delete,
+        "show": show
     }
     
     if args.action in actions.keys():
@@ -175,6 +181,17 @@ def delete(args):
         except GitCommandError as e:
             sys.stderr.write("\nWarning: could not commit note deletion (was not committed on creation?)\n\n")
 
+def show(args):
+    note_name = args.id
+    path = f'{PATH_TO_REPO}{os.path.sep}{note_name}'
+    path_to_note_file = f"{path}/README.md"
+    try:
+        with open(path_to_note_file, "r") as note_file:
+            for line in iter(note_file.readline, ""):
+                print(line.rstrip())
+    except FileNotFoundError as e:
+        sys.stderr.write("\nError: note with given name does not exist :(\n\n")
+        return
 
 if __name__ == "__main__":
     exit(main())
