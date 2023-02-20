@@ -38,12 +38,12 @@ def parse_args():
     show_parser.add_argument("id",
             help="note id")
 
-    return parser.parse_args()
+    # returns args but if none were given the arg is --help
+    return parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
 
 def main():
     args = parse_args()
-    
     try:
         global PATH_TO_REPO
         PATH_TO_REPO = os.environ["ZETTA_BOX"]
