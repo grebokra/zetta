@@ -38,6 +38,9 @@ def parse_args():
     show_parser.add_argument("id",
             help="note id")
 
+    list_parser = subparsers.add_parser("list",
+            help="list all notes")
+
     # returns args but if none were given the arg is --help
     return parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
@@ -67,7 +70,8 @@ def main():
         "edit": edit,
         "create": create,
         "delete": delete,
-        "show": show
+        "show": show,
+        "list": _list,
     }
     
     if args.action in actions.keys():
@@ -192,6 +196,21 @@ def show(args):
     except FileNotFoundError as e:
         sys.stderr.write("\nError: note with given name does not exist :(\n\n")
         return
+
+def _list(args):
+    notes = os.listdir(PATH_TO_REPO)[1:]
+    for note_name in notes:
+        path = f'{PATH_TO_REPO}{note_name}'
+        path_to_note_file = f"{path}/README.md"
+        with open(path_to_note_file, 'r') as note_file:
+            title = note_file.readline()
+            if "\n" in title:
+                title = title[:-1]
+            if "#" in title:
+                title = title[1:]
+
+        title = title.strip()
+        print(note_name + ": " + title)
 
 if __name__ == "__main__":
     exit(main())
