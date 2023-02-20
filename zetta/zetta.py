@@ -50,6 +50,7 @@ def main():
     try:
         global PATH_TO_REPO
         PATH_TO_REPO = os.environ["ZETTA_BOX"]
+        PATH_TO_REPO += "/" if PATH_TO_REPO[-1] != "/" else ""
     except KeyError as e:
         sys.stderr.write("Error: please set ZETTA_BOX environment variable\nto path to git repo to store notes in!\n\n")
         return -1
