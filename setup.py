@@ -5,7 +5,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
     requirements = fh.read()
 setup(
     name = 'zetta',
-    version = '0.0.1',
+    version = '0.0.2',
     author = 'Georgy Melnikov',
     author_email = 'gmelnikov@hotmail.com',
     license = 'MIT',
