@@ -214,8 +214,10 @@ def show(args):
 
 
 def _list(args):
-    notes = os.listdir(PATH_TO_REPO)[1:]
+    notes = os.listdir(PATH_TO_REPO)
     for note_id in notes:
+        if note_id == ".git":
+            continue
         path_to_note_file = note_path_from_id(note_id)
         with open(path_to_note_file, 'r') as note_file:
             title = note_file.readline()

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zetta"
+version = "0.0.2"
+authors = [
+    {name = "Georgy Melnikov", email = "gmelnikov@hotmail.com"},
+]
+description = 'A Tool for managing a "box of notes"'
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = ["notetaking", "notes", "productivity", "utils"]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "gitdb==4.0.9",
+    "GitPython==3.1.37",
+    "smmap==5.0.0",
+    "typing-extensions==3.10.0.2"
+]
+
+[project.scripts]
+zetta = "zetta.zetta:main"
